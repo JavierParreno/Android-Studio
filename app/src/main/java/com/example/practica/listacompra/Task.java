@@ -1,6 +1,7 @@
 package com.example.practica.listacompra;
 
 public class Task {
+    public boolean isCompleted;
     private String text;
     private boolean completed;
 
