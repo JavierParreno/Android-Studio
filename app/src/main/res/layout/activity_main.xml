@@ -9,25 +9,21 @@
     android:fitsSystemWindows="true"
     tools:openDrawer="start">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="wrap_content"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+
     <LinearLayout
         android:id="@+id/llPapa"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="wrap_content"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-        <FrameLayout
-            android:id="@+id/content_frame"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="50dp">
 
             <LinearLayout
                 android:id="@+id/llBoton"
@@ -43,7 +39,7 @@
                 android:layout_height="wrap_content"
                 android:text="* - Lista de la Compra - *" />
             </LinearLayout>
-        </FrameLayout>
+
     </LinearLayout>
 
     <com.google.android.material.navigation.NavigationView

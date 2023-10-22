@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import com.google.android.material.navigation.NavigationView;
 
 import com.example.practica.listacompra.ListaCompra;
 
@@ -17,7 +18,9 @@ public class MainActivity extends AppCompatActivity {
 
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle actionBarDrawerToggle;
+    private NavigationView navigationView;
     private Button btnaLista;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +34,23 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
         btnaLista = (Button) findViewById(R.id.btnLista);
+        navigationView = findViewById(R.id.nav_view);
+
+
+        navigationView.setNavigationItemSelectedListener(item -> {
+            int id = item.getItemId();
+            if (id == R.id.menu_item_home) {
+                // No necesitas hacer nada ya que estás en la actividad principal
+            } else if (id == R.id.menu_item_lista) {
+                // Abre la actividad ListaCompra
+                openListaCompra();
+            } else if (id == R.id.menu_item_foto) {
+                // Abre la actividad Foto
+                openFoto();
+            }
+            drawerLayout.closeDrawer(GravityCompat.START);
+            return true;
+        });
 
         btnaLista.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,5 +80,14 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    private void openListaCompra() {
+        Intent i = new Intent(MainActivity.this, ListaCompra.class);
+        startActivity(i);
+    }
+
+    private void openFoto() {
+        Intent i = new Intent(MainActivity.this, Foto.class);
+        startActivity(i);
+    }
 
 }
