@@ -3,13 +3,13 @@ import android.net.Uri;
 
 public class Task {
 
-    private boolean taskCompleted; // Mantén el nombre de la variable como taskCompleted
+    private boolean taskCompleted;
     private String text;
-    private Uri imageUri; // Agrega un campo para la URI de la imagen
+    private Uri imageUri;
 
     public Task(String text, boolean taskCompleted, Uri imageUri) {
         this.text = text;
-        this.taskCompleted = taskCompleted; // Asegúrate de usar el nombre correcto
+        this.taskCompleted = taskCompleted;
         this.imageUri = imageUri;
     }
 
@@ -22,11 +22,11 @@ public class Task {
     }
 
     public boolean isCompleted() {
-        return taskCompleted; // Usa el nombre correcto
+        return taskCompleted;
     }
 
     public void setCompleted(boolean taskCompleted) {
-        this.taskCompleted = taskCompleted; // Usa el nombre correcto
+        this.taskCompleted = taskCompleted;
     }
 
     public Uri getImageUri() {
@@ -37,4 +37,3 @@ public class Task {
         this.imageUri = imageUri;
     }
 }
-

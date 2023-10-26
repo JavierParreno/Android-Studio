@@ -3,21 +3,56 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/drawer_layout"
-    tools:context=".Foto">
+    android:fitsSystemWindows="true"
+    tools:openDrawer="start">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
+        <LinearLayout
+            android:id="@+id/llPapa"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
+            <LinearLayout
+                android:id="@+id/llBoton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginTop="50dp"
+                android:orientation="horizontal">
 
+                <Button
+                    android:id="@+id/btnFoto"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="* - Foto - *" />
+
+                <ImageView
+                    android:id="@+id/imgCaptured"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Imagen Capturada"
+                    android:layout_centerInParent="true"
+                    android:visibility="gone" />
+            </LinearLayout>>
+    </LinearLayout>
 
 
     <com.google.android.material.navigation.NavigationView
@@ -27,12 +62,5 @@
         android:layout_gravity="start"
         app:menu="@menu/drawer_menu" />
 
+</androidx.drawerlayout.widget.DrawerLayout>
 
-
-
-
-
-
-
-
-    </androidx.drawerlayout.widget.DrawerLayout>

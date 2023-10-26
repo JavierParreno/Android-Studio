@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Base64;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -22,6 +23,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+
 import com.example.practica.Foto;
 import com.example.practica.MainActivity;
 import com.example.practica.R;
@@ -29,6 +31,9 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +45,7 @@ public class ListaCompra extends AppCompatActivity implements TaskAdapter.OnItem
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle actionBarDrawerToggle;
     private Uri selectedImageUri;
-    private static final int PICK_IMAGE_REQUEST = 1;
+    private static final int PICK_IMAGE_REQUEST = 123;
     private NavigationView navigationView;
 
     @Override
@@ -203,8 +208,10 @@ public class ListaCompra extends AppCompatActivity implements TaskAdapter.OnItem
 
     @Override
     public void onSelectImageClick(int position) {
-        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        startActivityForResult(intent, PICK_IMAGE_REQUEST);
+        if (taskAdapter != null && position >= 0 && position < taskList.size()) {
+            // Llama al método selectImage en tu adaptador
+            taskAdapter.selectImage(position, selectedImageUri);
+        }
 
     }
 
@@ -222,22 +229,56 @@ public class ListaCompra extends AppCompatActivity implements TaskAdapter.OnItem
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null) {
             selectedImageUri = data.getData();
 
-            // Muestra la imagen seleccionada en el ImageView
-            ImageView imgTarea = findViewById(R.id.imgTarea);
-            imgTarea.setImageURI(selectedImageUri);
-            imgTarea.setVisibility(View.VISIBLE);
+            // Convierte la Uri de la imagen en una representación de bytes
+            byte[] imageBytes = uriToBytes(selectedImageUri);
 
-            // Obtén la posición de la tarea actual utilizando el texto de la tarea
-            String taskTextToMatch = "Buscar imagen";
-            // Define el texto de la tarea con el que deseas hacer coincidir
-            int taskPosition = getTaskPosition(taskTextToMatch);
+            if (imageBytes != null) {
+                // Convierte los bytes en una cadena Base64
+                String imageBase64 = Base64.encodeToString(imageBytes, Base64.DEFAULT);
 
-            if (taskPosition != -1) {
-                Task task = taskList.get(taskPosition);
-                task.setImageUri(selectedImageUri);
+                // Guarda la cadena Base64 en SharedPreferences
+                saveImageToSharedPreferences(imageBase64);
+
+                // Muestra la imagen seleccionada en el ImageView
+                ImageView imgTarea = findViewById(R.id.imgTarea);
+                imgTarea.setImageURI(selectedImageUri);
+                imgTarea.setVisibility(View.VISIBLE);
+
+                // Obtén la posición de la tarea actual utilizando el texto de la tarea
+                String taskTextToMatch = "Buscar imagen";
+                int taskPosition = getTaskPosition(taskTextToMatch);
+
+                if (taskPosition != -1) {
+                    Task task = taskList.get(taskPosition);
+                    task.setImageUri(selectedImageUri);
+                }
             }
         }
     }
+
+    private void saveImageToSharedPreferences(String imageBase64) {
+        SharedPreferences sharedPreferences = getSharedPreferences("MisSharedPreferences", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("image_data", imageBase64);
+        editor.apply();
+    }
+
+    private byte[] uriToBytes(Uri uri) {
+        try {
+            InputStream inputStream = getContentResolver().openInputStream(uri);
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            int bytesRead;
+            byte[] buffer = new byte[1024];
+            while ((bytesRead = inputStream.read(buffer)) != -1) {
+                byteArrayOutputStream.write(buffer, 0, bytesRead);
+            }
+            return byteArrayOutputStream.toByteArray();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 
     private int getTaskPosition(String taskTextToMatch) {
         for (int i = 0; i < taskList.size(); i++) {

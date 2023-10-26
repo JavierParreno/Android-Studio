@@ -52,7 +52,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         notifyItemChanged(position); // Cambia taskAdapter.notifyItemChanged(position) a notifyItemChanged(position)
     }
 
-
     @Override
     public int getItemCount() {
         return taskList.size();
@@ -80,4 +79,9 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
             btnSeleccionarImagen = itemView.findViewById(R.id.btnSeleccionarImagen);
         }
     }
+    public void setTaskList(List<Task> taskList) {
+        this.taskList = taskList;
+        notifyDataSetChanged(); // Notificar al adaptador que los datos han cambiado
+    }
+
 }
