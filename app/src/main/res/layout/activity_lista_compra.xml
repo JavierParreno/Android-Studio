@@ -44,7 +44,6 @@
             app:layout_constraintTop_toTopOf="parent"
             style="@style/LargeSpinner" />
 
-
         <ImageView
             android:id="@+id/imgTriang"
             android:layout_width="50dp"

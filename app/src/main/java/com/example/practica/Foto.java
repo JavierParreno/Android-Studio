@@ -138,5 +138,4 @@ public class Foto extends AppCompatActivity {
             ivFoto.setImageBitmap(imageBitmap);
         }
     }
-
 }

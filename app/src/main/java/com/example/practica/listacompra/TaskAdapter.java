@@ -35,7 +35,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         this.taskList = taskList;
     }
 
-
     @Override
     public void onBindViewHolder(TaskViewHolder holder, int position) {
         Task currentTask = taskList.get(position);

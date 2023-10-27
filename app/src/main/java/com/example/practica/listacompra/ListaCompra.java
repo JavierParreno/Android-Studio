@@ -162,7 +162,6 @@ public class ListaCompra extends AppCompatActivity implements TaskAdapter.OnItem
         // Actualiza el adaptador del RecyclerView con las tareas filtradas
         taskAdapter.setTaskList(filteredTasks);
         taskAdapter.notifyDataSetChanged();
-
     }
 
     public void updateTaskList(List<Task> updatedTaskList) {

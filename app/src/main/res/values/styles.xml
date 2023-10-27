@@ -4,7 +4,4 @@
         <item name="android:minWidth">200dp</item>
         <item name="android:minHeight">40dp</item>
     </style>
-
-
-
 </resources>
