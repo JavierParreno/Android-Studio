@@ -8,9 +8,12 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
@@ -42,6 +45,7 @@ public class ListaCompra extends AppCompatActivity implements TaskAdapter.OnItem
     private Uri selectedImageUri;
     private static final int PICK_IMAGE_REQUEST = 1;
     private NavigationView navigationView;
+    private Spinner spinnerFilter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +85,29 @@ public class ListaCompra extends AppCompatActivity implements TaskAdapter.OnItem
         ImageView imgTarea = findViewById(R.id.imgTarea);
         btnSeleccionarImagen.setOnClickListener(v -> openImageGallery());
 
+        String[] filterOptions = {"Todas las tareas", "Tareas completadas", "Tareas pendientes"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, filterOptions);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        spinnerFilter = findViewById(R.id.spinnerFilter);
+        spinnerFilter.setAdapter(adapter);
+
+        spinnerFilter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                // Obten la opción seleccionada
+                String selectedOption = filterOptions[position];
+
+                // Filtra la lista de tareas en función de la opción seleccionada y actualiza el RecyclerView
+                filterTasks(selectedOption);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // En este caso, no se realiza ninguna acción cuando no se selecciona nada.
+            }
+        });
+
         // Agregar 5 tareas de ejemplo
         taskList.add(new Task("Tarea 1", false, null));
         taskList.add(new Task("Tarea 2", false, null));
@@ -98,18 +125,49 @@ public class ListaCompra extends AppCompatActivity implements TaskAdapter.OnItem
         // Agregar una tarea al hacer clic en el botón "Agregar Tarea"
         findViewById(R.id.btnAgregarTarea).setOnClickListener(view -> showAddTaskDialog());
 
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-                    drawerLayout.closeDrawer(GravityCompat.START);
-                } else {
-                    drawerLayout.openDrawer(GravityCompat.START);
-                }
+        toolbar.setNavigationOnClickListener(view -> {
+            if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                drawerLayout.closeDrawer(GravityCompat.START);
+            } else {
+                drawerLayout.openDrawer(GravityCompat.START);
             }
         });
 
         restoreListFromSharedPreferences();
+    }
+
+    private void filterTasks(String selectedOption) {
+        List<Task> filteredTasks = new ArrayList<>();
+
+        switch (selectedOption) {
+            case "Todas las tareas":
+                filteredTasks.addAll(taskList); // Muestra todas las tareas sin filtrar
+                break;
+            case "Tareas completadas":
+                for (Task task : taskList) {
+                    if (task.isCompleted()) {
+                        filteredTasks.add(task); // Filtra tareas completadas
+                    }
+                }
+                break;
+            case "Tareas pendientes":
+                for (Task task : taskList) {
+                    if (!task.isCompleted()) {
+                        filteredTasks.add(task); // Filtra tareas pendientes
+                    }
+                }
+                break;
+        }
+
+        // Actualiza el adaptador del RecyclerView con las tareas filtradas
+        taskAdapter.setTaskList(filteredTasks);
+        taskAdapter.notifyDataSetChanged();
+
+    }
+
+    public void updateTaskList(List<Task> updatedTaskList) {
+        taskList = updatedTaskList;
+        taskAdapter.notifyDataSetChanged();
     }
 
     private void saveListToSharedPreferences() {
@@ -205,7 +263,6 @@ public class ListaCompra extends AppCompatActivity implements TaskAdapter.OnItem
     public void onSelectImageClick(int position) {
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(intent, PICK_IMAGE_REQUEST);
-
     }
 
     @Override

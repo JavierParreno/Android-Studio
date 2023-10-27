@@ -17,9 +17,6 @@
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
 
-
-
-
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view"
         android:layout_width="wrap_content"
@@ -27,12 +24,42 @@
         android:layout_gravity="start"
         app:menu="@menu/drawer_menu" />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginTop="80dp">
+
+    <LinearLayout
+        android:id="@+id/llBotonFoto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="50dp"
+        android:orientation="horizontal">
+
+    <Button
+        android:id="@+id/btnCamera"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="*- FOTO -*" />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/llimFoto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="50dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/ivFoto"
+            android:layout_width="match_parent"
+            android:layout_height="443dp"
+            app:srcCompat="@drawable/tu_imagen_por_defecto" />
+
+    </LinearLayout>
+    </LinearLayout>
 
 
-
-
-
-
-
-
-    </androidx.drawerlayout.widget.DrawerLayout>
+</androidx.drawerlayout.widget.DrawerLayout>

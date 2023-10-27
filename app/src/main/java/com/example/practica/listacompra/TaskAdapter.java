@@ -31,6 +31,10 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.task_item, parent, false);
         return new TaskViewHolder(view);
     }
+    public void setTaskList(List<Task> taskList) {
+        this.taskList = taskList;
+    }
+
 
     @Override
     public void onBindViewHolder(TaskViewHolder holder, int position) {

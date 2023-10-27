@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
     private ActionBarDrawerToggle actionBarDrawerToggle;
     private NavigationView navigationView;
     private Button btnaLista;
-
+    private Button btnaFoto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +33,10 @@ public class MainActivity extends AppCompatActivity {
         actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
+
         btnaLista = (Button) findViewById(R.id.btnLista);
+        btnaFoto = (Button) findViewById(R.id.btnFoto);
+
         navigationView = findViewById(R.id.nav_view);
 
 
@@ -56,6 +59,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(MainActivity.this, ListaCompra.class);
+                startActivity(i);
+            }
+        });
+
+        btnaFoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MainActivity.this, Foto.class);
                 startActivity(i);
             }
         });
