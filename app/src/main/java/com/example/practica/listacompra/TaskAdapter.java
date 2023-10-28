@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -35,17 +36,28 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         this.taskList = taskList;
     }
 
+
     @Override
     public void onBindViewHolder(TaskViewHolder holder, int position) {
         Task currentTask = taskList.get(position);
 
         // Asocia los elementos de la tarea con las vistas en task_item.xml
         holder.taskText.setText(currentTask.getText());
-        holder.taskCheckbox.setChecked(currentTask.isCompleted());
+        holder.taskCheckbox.setChecked(currentTask.isTaskCompleted());
 
         holder.btnSeleccionarImagen.setOnClickListener(view -> mListener.onSelectImageClick(position)); // Usa el método onSelectImageClick
         holder.taskCheckbox.setOnClickListener(view -> mListener.onCheckBoxClick(position));
         holder.itemView.setOnClickListener(view -> mListener.onItemClick(position));
+
+        Uri selectedImageUri = currentTask.getImageUri();
+
+        if (currentTask.getImageUri() != null) {
+            holder.imgTarea.setImageURI(currentTask.getImageUri());
+            holder.imgTarea.setVisibility(View.VISIBLE);
+        } else {
+            holder.imgTarea.setImageURI(null);
+            holder.imgTarea.setVisibility(View.GONE);
+        }
     }
 
     public void selectImage(int position, Uri selectedImageUri) {
@@ -54,6 +66,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         task.setImageUri(selectedImageUri);
         notifyItemChanged(position); // Cambia taskAdapter.notifyItemChanged(position) a notifyItemChanged(position)
     }
+
 
     @Override
     public int getItemCount() {
@@ -74,17 +87,15 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         public TextView taskText;
         public CheckBox taskCheckbox;
         public Button btnSeleccionarImagen;
+        public ImageView imgTarea;
+
 
         public TaskViewHolder(View itemView) {
             super(itemView);
             taskText = itemView.findViewById(R.id.taskTextView);
             taskCheckbox = itemView.findViewById(R.id.taskCheckBox);
             btnSeleccionarImagen = itemView.findViewById(R.id.btnSeleccionarImagen);
+            imgTarea = itemView.findViewById(R.id.imgTareaa);
         }
     }
-    public void setTaskList(List<Task> taskList) {
-        this.taskList = taskList;
-        notifyDataSetChanged(); // Notificar al adaptador que los datos han cambiado
-    }
-
 }

@@ -14,7 +14,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
-
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,7 +23,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.practica.Foto;
 import com.example.practica.MainActivity;
 import com.example.practica.R;
@@ -46,6 +44,7 @@ public class ListaCompra extends AppCompatActivity implements TaskAdapter.OnItem
     private static final int PICK_IMAGE_REQUEST = 1;
     private NavigationView navigationView;
     private Spinner spinnerFilter;
+    private ImageView imgTarea;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +52,19 @@ public class ListaCompra extends AppCompatActivity implements TaskAdapter.OnItem
         setContentView(R.layout.activity_lista_compra);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
+
         SharedPreferences sharedPreferences = getSharedPreferences("MisSharedPreferences", Context.MODE_PRIVATE);
+        String imageUriString = sharedPreferences.getString("selected_image_uri", null);
+        imgTarea = findViewById(R.id.imgTareaa); // Debes asegurarte de inicializar correctamente imgTarea
+
+        if (imageUriString != null) {
+            selectedImageUri = Uri.parse(imageUriString);
+
+            if (selectedImageUri != null) {
+                imgTarea.setImageURI(selectedImageUri);
+                imgTarea.setVisibility(View.VISIBLE);
+            }
+        }
 
         String serializedList = sharedPreferences.getString("lista_state", null);
         if (serializedList != null) {
@@ -82,7 +93,7 @@ public class ListaCompra extends AppCompatActivity implements TaskAdapter.OnItem
         recyclerView = findViewById(R.id.recyclerView);
 
         Button btnSeleccionarImagen = findViewById(R.id.btnSeleccionarImagen);
-        ImageView imgTarea = findViewById(R.id.imgTarea);
+
         btnSeleccionarImagen.setOnClickListener(v -> openImageGallery());
 
         String[] filterOptions = {"Todas las tareas", "Tareas completadas", "Tareas pendientes"};
@@ -145,14 +156,14 @@ public class ListaCompra extends AppCompatActivity implements TaskAdapter.OnItem
                 break;
             case "Tareas completadas":
                 for (Task task : taskList) {
-                    if (task.isCompleted()) {
+                    if (task.isTaskCompleted()) {
                         filteredTasks.add(task); // Filtra tareas completadas
                     }
                 }
                 break;
             case "Tareas pendientes":
                 for (Task task : taskList) {
-                    if (!task.isCompleted()) {
+                    if (!task.isTaskCompleted()) {
                         filteredTasks.add(task); // Filtra tareas pendientes
                     }
                 }
@@ -162,6 +173,7 @@ public class ListaCompra extends AppCompatActivity implements TaskAdapter.OnItem
         // Actualiza el adaptador del RecyclerView con las tareas filtradas
         taskAdapter.setTaskList(filteredTasks);
         taskAdapter.notifyDataSetChanged();
+
     }
 
     public void updateTaskList(List<Task> updatedTaskList) {
@@ -244,7 +256,7 @@ public class ListaCompra extends AppCompatActivity implements TaskAdapter.OnItem
         });
 
         btnMarkAsCompleted.setOnClickListener(v -> {
-            selectedTask.setCompleted(true);
+            selectedTask.setTaskCompleted(true);
             taskAdapter.notifyItemChanged(position);
             dialog[0].dismiss();
             // Cierra el AlertDialog después de marcar como realizada
@@ -268,7 +280,7 @@ public class ListaCompra extends AppCompatActivity implements TaskAdapter.OnItem
     public void onCheckBoxClick(int position) {
         // Marcar o desmarcar la tarea como completada
         Task selectedTask = taskList.get(position);
-        selectedTask.setCompleted(!selectedTask.isCompleted());
+        selectedTask.setTaskCompleted(!selectedTask.isTaskCompleted());
         taskAdapter.notifyItemChanged(position);
     }
 
@@ -279,9 +291,14 @@ public class ListaCompra extends AppCompatActivity implements TaskAdapter.OnItem
             selectedImageUri = data.getData();
 
             // Muestra la imagen seleccionada en el ImageView
-            ImageView imgTarea = findViewById(R.id.imgTarea);
             imgTarea.setImageURI(selectedImageUri);
             imgTarea.setVisibility(View.VISIBLE);
+
+            // Guarda la URI de la imagen seleccionada en SharedPreferences
+            SharedPreferences sharedPreferences = getSharedPreferences("MisSharedPreferences", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("selected_image_uri", selectedImageUri.toString());
+            editor.apply();
 
             // Obtén la posición de la tarea actual utilizando el texto de la tarea
             String taskTextToMatch = "Buscar imagen";
@@ -291,6 +308,7 @@ public class ListaCompra extends AppCompatActivity implements TaskAdapter.OnItem
             if (taskPosition != -1) {
                 Task task = taskList.get(taskPosition);
                 task.setImageUri(selectedImageUri);
+                taskAdapter.selectImage(taskPosition, selectedImageUri);
             }
         }
     }
@@ -328,7 +346,6 @@ public class ListaCompra extends AppCompatActivity implements TaskAdapter.OnItem
                 // Notificar al adaptador que se insertó un nuevo elemento
 
                 selectedImageUri = null;
-                ImageView imgTarea = findViewById(R.id.imgTarea);
                 imgTarea.setImageURI(null);
                 imgTarea.setVisibility(View.GONE);
                 // Guardar el estado actual de la lista en SharedPreferences
@@ -352,6 +369,7 @@ public class ListaCompra extends AppCompatActivity implements TaskAdapter.OnItem
         return gson.toJson(taskList);
     }
 
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (actionBarDrawerToggle.onOptionsItemSelected(item)) {
             return true;

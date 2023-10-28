@@ -8,8 +8,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import androidx.annotation.Nullable;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -19,16 +17,9 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import com.example.practica.listacompra.ListaCompra;
 import com.google.android.material.navigation.NavigationView;
 
-import android.Manifest;
-import android.content.pm.PackageManager;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
 public class Foto extends AppCompatActivity {
-    private static final int REQUEST_IMAGE_CAPTURE = 1;
-
     private DrawerLayout drawerLayout;
-    private static final int CAMERA_PERMISSION_REQUEST = 100;
     private ActionBarDrawerToggle actionBarDrawerToggle;
     private NavigationView navigationView;
     private Button btnCamara;
@@ -58,7 +49,6 @@ public class Foto extends AppCompatActivity {
             if (id == R.id.menu_item_home) {
                 openHome();
             } else if (id == R.id.menu_item_lista) {
-                // Abre la actividad ListaCompra
                 openListaCompra();
             }
             drawerLayout.closeDrawer(GravityCompat.START);
@@ -68,38 +58,22 @@ public class Foto extends AppCompatActivity {
         btnCamara.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                checkCameraPermission();
+                Intent camerai = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(camerai, 123);
 
             }
         });
 
     }
 
-    private void checkCameraPermission() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            // Si el permiso no está concedido, solicítalo al usuario.
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_REQUEST);
-        } else {
-            // El permiso de la cámara ya está concedido, abre la cámara.
-            dispatchTakePictureIntent();
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == CAMERA_PERMISSION_REQUEST) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // El usuario concedió el permiso, abre la cámara.
-                dispatchTakePictureIntent();
-            }
-        }
-    }
-
-    private void dispatchTakePictureIntent() {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        // Se busca que el codigo conincida
+        if (requestCode == 123) {
+            // Se guarda la foto en una variable tipo bitmap
+            Bitmap photo = (Bitmap) data.getExtras().get("data");
+            // Se muestra la imagen en el imageview
+            ivFoto.setImageBitmap(photo);
         }
     }
 
@@ -130,12 +104,4 @@ public class Foto extends AppCompatActivity {
         startActivity(i);
     }
 
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
-            ivFoto.setImageBitmap(imageBitmap);
-        }
-    }
 }

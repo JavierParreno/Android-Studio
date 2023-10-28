@@ -22,7 +22,7 @@
         android:layout_weight="1" />
 
     <ImageView
-        android:id="@+id/imgTarea"
+        android:id="@+id/imgTareaa"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:scaleType="fitCenter"
