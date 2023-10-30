@@ -39,8 +39,23 @@
             </LinearLayout>
 
 
+            <LinearLayout
+                android:id="@+id/llBotonFoto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginTop="50dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btnFoto"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="* - Foto - *" />
+            </LinearLayout>
+
         <LinearLayout
-            android:id="@+id/llBotonFoto"
+            android:id="@+id/llLogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -48,13 +63,27 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/btnFoto"
+                android:id="@+id/btnRegistro"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="* - Foto - *" />
-
-
+                android:text="* - REGISTRO - *" />
         </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/llSubirFotoFire"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginTop="50dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnSubirFotoFire"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="* - SUBIR FOTO FIRE - *" />
+        </LinearLayout>
+
 
     </LinearLayout>
 

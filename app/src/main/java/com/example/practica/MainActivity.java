@@ -19,8 +19,7 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle actionBarDrawerToggle;
     private NavigationView navigationView;
-    private Button btnaLista;
-    private Button btnaFoto;
+    private Button btnaLista, btnaFoto, btnRegistro, btnSubirFotoFire;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +35,8 @@ public class MainActivity extends AppCompatActivity {
 
         btnaLista = (Button) findViewById(R.id.btnLista);
         btnaFoto = (Button) findViewById(R.id.btnFoto);
+        btnRegistro = (Button) findViewById(R.id.btnRegistro);
+        btnSubirFotoFire = (Button) findViewById(R.id.btnSubirFotoFire);
 
         navigationView = findViewById(R.id.nav_view);
 
@@ -67,6 +68,22 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(MainActivity.this, Foto.class);
+                startActivity(i);
+            }
+        });
+
+        btnRegistro.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MainActivity.this, Registro.class);
+                startActivity(i);
+            }
+        });
+
+        btnSubirFotoFire.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MainActivity.this, SubirImagenFirebase.class);
                 startActivity(i);
             }
         });

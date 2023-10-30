@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "881439767629",
+    "project_id": "cursopractica-38edd",
+    "storage_bucket": "cursopractica-38edd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:881439767629:android:1a23806749e61cce4fb004",
+        "android_client_info": {
+          "package_name": "com.example.practica"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDYUq_A5IeDVGQoBRaf4M7HX2zmy7tf0DA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
