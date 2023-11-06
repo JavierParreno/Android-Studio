@@ -36,7 +36,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         this.taskList = taskList;
     }
 
-
     @Override
     public void onBindViewHolder(TaskViewHolder holder, int position) {
         Task currentTask = taskList.get(position);
@@ -89,13 +88,12 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         public Button btnSeleccionarImagen;
         public ImageView imgTarea;
 
-
         public TaskViewHolder(View itemView) {
             super(itemView);
             taskText = itemView.findViewById(R.id.taskTextView);
             taskCheckbox = itemView.findViewById(R.id.taskCheckBox);
             btnSeleccionarImagen = itemView.findViewById(R.id.btnSeleccionarImagen);
-            imgTarea = itemView.findViewById(R.id.imgTareaa);
+            imgTarea = itemView.findViewById(R.id.imgTarea);
         }
     }
 }

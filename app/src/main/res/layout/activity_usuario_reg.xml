@@ -41,15 +41,6 @@
         android:inputType="textEmailAddress"
         android:layout_marginTop="16dp" />
 
-    <EditText
-        android:id="@+id/etPassword"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Contraseña"
-        android:textSize="18sp"
-        android:inputType="textPassword"
-        android:layout_marginTop="16dp" />
-
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

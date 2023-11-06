@@ -84,6 +84,21 @@
                 android:text="* - SUBIR FOTO FIRE - *" />
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/llMapa"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginTop="50dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnMapa"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="* - MAPA - *" />
+        </LinearLayout>
+
 
     </LinearLayout>
 

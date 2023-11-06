@@ -22,12 +22,10 @@
         android:layout_weight="1" />
 
     <ImageView
-        android:id="@+id/imgTareaa"
+        android:id="@+id/imgTarea"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:scaleType="fitCenter"
         android:layout_marginStart="8dp"
         android:src="@drawable/tu_imagen_por_defecto"/>
-
-
 </LinearLayout>

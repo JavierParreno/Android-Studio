@@ -55,7 +55,7 @@ public class ListaCompra extends AppCompatActivity implements TaskAdapter.OnItem
 
         SharedPreferences sharedPreferences = getSharedPreferences("MisSharedPreferences", Context.MODE_PRIVATE);
         String imageUriString = sharedPreferences.getString("selected_image_uri", null);
-        imgTarea = findViewById(R.id.imgTareaa); // Debes asegurarte de inicializar correctamente imgTarea
+        imgTarea = findViewById(R.id.imgTarea); // Debes asegurarte de inicializar correctamente imgTarea
 
         if (imageUriString != null) {
             selectedImageUri = Uri.parse(imageUriString);

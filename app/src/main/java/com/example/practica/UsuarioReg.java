@@ -12,9 +12,9 @@
     import androidx.annotation.Nullable;
     import androidx.appcompat.app.AppCompatActivity;
     import com.google.android.gms.tasks.OnSuccessListener;
-    import com.google.firebase.auth.AuthResult;
     import com.google.firebase.auth.FirebaseAuth;
     import com.google.firebase.auth.FirebaseUser;
+    import com.google.firebase.database.DatabaseReference;
     import com.google.firebase.database.FirebaseDatabase;
     import com.google.firebase.storage.FirebaseStorage;
     import com.google.firebase.storage.StorageReference;
@@ -24,7 +24,7 @@
         private static final int PICK_IMAGE_REQUEST = 1;
         private ImageView ivPerfil;
         private Button btnSeleccionarFoto, btnModificar, btnFirebase;
-        private EditText etNombre, etEmail, etPassword;
+        private EditText etNombre, etEmail;
         private Uri selectedImageUri;
         private FirebaseAuth firebaseAuth;
         private FirebaseDatabase firebaseDatabase;
@@ -40,21 +40,11 @@
             btnModificar = findViewById(R.id.btnModificar);
             etNombre = findViewById(R.id.etNombre);
             etEmail = findViewById(R.id.etEmail);
-            etPassword = findViewById(R.id.etPassword);
             btnFirebase = findViewById(R.id.btnFirebase);
 
             firebaseAuth = FirebaseAuth.getInstance();
             firebaseDatabase = FirebaseDatabase.getInstance();
             firebaseStorage = FirebaseStorage.getInstance();
-
-            FirebaseUser currentUser = firebaseAuth.getCurrentUser();
-            if (currentUser != null) {
-                String nombreUsuario = currentUser.getDisplayName();
-                String emailUsuario = currentUser.getEmail();
-
-                etNombre.setText(nombreUsuario);
-                etEmail.setText(emailUsuario);
-            }
 
             btnSeleccionarFoto.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -79,40 +69,41 @@
                 public void onClick(View v) {
                     final String nombre = etNombre.getText().toString().trim();
                     final String email = etEmail.getText().toString().trim();
-                    String password = etPassword.getText().toString();
 
+                    FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+                    if (currentUser != null) {
+                        String uid = currentUser.getUid();
 
-                    if (selectedImageUri != null) {
-                        // Subir la foto a Firebase Storage
-                        StorageReference storageReference = firebaseStorage.getReference().child("fotos_perfil/" + selectedImageUri.getLastPathSegment());
-                        storageReference.putFile(selectedImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                            @Override
-                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                    @Override
-                                    public void onSuccess(Uri uri) {
-                                        // URL de la foto en Firebase Storage
-                                        String fotoUrl = uri.toString();
+                        if (selectedImageUri != null) {
+                            // Subir la foto a Firebase Storage
+                            StorageReference storageReference = firebaseStorage.getReference().child("fotos_perfil/" + selectedImageUri.getLastPathSegment());
+                            storageReference.putFile(selectedImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                @Override
+                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                    storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                        @Override
+                                        public void onSuccess(Uri uri) {
+                                            // URL de la foto en Firebase Storage
+                                            String fotoUrl = uri.toString();
 
-                                        // Registrar al usuario en Firebase Authentication
-                                        firebaseAuth.createUserWithEmailAndPassword(email, password)
-                                                .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-                                                    @Override
-                                                    public void onSuccess(AuthResult authResult) {
-                                                        // Obtener el UID del usuario registrado
-                                                        String uid = firebaseAuth.getCurrentUser().getUid();
+                                            // Actualiza los datos del usuario en Firebase Realtime Database
+                                            DatabaseReference usuarioRef = firebaseDatabase.getReference("usuarios").child(uid);
+                                            Usuario usuario = new Usuario(nombre, email, fotoUrl);
+                                            usuarioRef.setValue(usuario);
 
-                                                        // Guardar los datos del usuario en Firebase Realtime Database
-                                                        Usuario usuario = new Usuario(nombre, email, fotoUrl);
-                                                        firebaseDatabase.getReference("usuarios").child(uid).setValue(usuario);
+                                            Toast.makeText(UsuarioReg.this, "Datos actualizados con éxito", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                                }
+                            });
+                        } else {
+                            // Si no se selecciona una nueva foto, solo actualiza los datos en Firebase Realtime Database
+                            DatabaseReference usuarioRef = firebaseDatabase.getReference("usuarios").child(uid);
+                            Usuario usuario = new Usuario(nombre, email, currentUser.getPhotoUrl().toString()); // Usa la URL de la foto actual
+                            usuarioRef.setValue(usuario);
 
-                                                        Toast.makeText(UsuarioReg.this, "Registro exitoso", Toast.LENGTH_SHORT).show();
-                                                    }
-                                                });
-                                    }
-                                });
-                            }
-                        });
+                            Toast.makeText(UsuarioReg.this, "Datos actualizados con éxito", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 }
             });
