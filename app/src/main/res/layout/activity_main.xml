@@ -10,7 +10,6 @@
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
-
         android:layout_width="wrap_content"
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
@@ -31,13 +30,12 @@
                 android:layout_marginTop="50dp"
                 android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/btnLista"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="* - Lista de la Compra - *" />
+                <Button
+                    android:id="@+id/btnLista"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="* - Lista de la Compra - *" />
             </LinearLayout>
-
 
             <LinearLayout
                 android:id="@+id/llBotonFoto"
@@ -97,6 +95,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="* - MAPA - *" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/llMapBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginTop="50dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnMapBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="* - MAPBOX - *" />
         </LinearLayout>
 
 

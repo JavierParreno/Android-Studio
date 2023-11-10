@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+
+import com.example.practica.mapagoogle.Mapa;
 import com.google.android.material.navigation.NavigationView;
 
 import com.example.practica.listacompra.ListaCompra;
@@ -19,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle actionBarDrawerToggle;
     private NavigationView navigationView;
-    private Button btnaLista, btnaFoto, btnRegistro, btnSubirFotoFire, btnMapa;
+    private Button btnaLista, btnaFoto, btnRegistro, btnSubirFotoFire, btnMapa, btnMapBox;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
         btnRegistro = (Button) findViewById(R.id.btnRegistro);
         btnSubirFotoFire = (Button) findViewById(R.id.btnSubirFotoFire);
         btnMapa = (Button) findViewById(R.id.btnMapa);
+        btnMapBox = (Button) findViewById(R.id.btnMapBox);
 
         navigationView = findViewById(R.id.nav_view);
 
@@ -93,6 +96,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(MainActivity.this, Mapa.class);
+                startActivity(i);
+            }
+        });
+
+        btnMapBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MainActivity.this, MapBox.class);
                 startActivity(i);
             }
         });
