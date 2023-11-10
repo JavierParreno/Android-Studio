@@ -2,11 +2,13 @@ package com.example.practica;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -15,8 +17,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
 
-public class Mapa extends AppCompatActivity  {
-    private GoogleMap mMap;
+public class Mapa extends AppCompatActivity {
     private EditText etTitulo;
     private EditText etLongitud;
     private EditText etLatitud;
@@ -46,14 +47,13 @@ public class Mapa extends AppCompatActivity  {
                 double latitude = Double.parseDouble(etLatitud.getText().toString());
                 double longitude = Double.parseDouble(etLongitud.getText().toString());
 
-                // Agregar un marcador al mapa con el título y las coordenadas proporcionadas
-                mMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)).title(etTitulo.getText().toString()));
-
                 // Agregar un POI a la lista
                 poisList.add(new Pois(etTitulo.getText().toString(), latitude, longitude));
 
-
-
+                // Limpiar los campos después de agregar un POI
+                etTitulo.setText("");
+                etLatitud.setText("");
+                etLongitud.setText("");
             }
         });
 
@@ -61,7 +61,6 @@ public class Mapa extends AppCompatActivity  {
         btnGuardar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Aquí puedes implementar la lógica para guardar los POIs en la lista.
                 // Agrega el POI actual a la lista.
                 poisList.add(new Pois(etTitulo.getText().toString(), Double.parseDouble(etLatitud.getText().toString()), Double.parseDouble(etLongitud.getText().toString())));
             }

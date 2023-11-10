@@ -1,11 +1,8 @@
 package com.example.practica;
 
-import com.google.android.gms.maps.model.MarkerOptions;
-
 import java.io.Serializable;
 
-
-public class Pois extends MarkerOptions implements Serializable {
+public class Pois implements Serializable {
     private String titulo;
     private double latitud;
     private double longitud;
