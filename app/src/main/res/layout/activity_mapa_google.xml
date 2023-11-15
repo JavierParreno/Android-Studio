@@ -31,9 +31,6 @@
 
                 android:padding="16dp"
                 android:scrollbarSize="10dp" />
-
-            <!-- Otros elementos que desees agregar dentro del ScrollView -->
-
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

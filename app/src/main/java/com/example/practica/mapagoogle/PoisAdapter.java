@@ -15,7 +15,7 @@ public class PoisAdapter extends RecyclerView.Adapter<PoisAdapter.PoisViewHolder
     public ArrayList<Pois> poisList;
     private OnItemClickListener onItemClickListener;
 
-    public PoisAdapter(ArrayList<Pois> poisList) {
+    public PoisAdapter(ArrayList<Pois> poisList, OnItemClickListener onItemClickListener) {
         this.poisList = poisList;
         this.onItemClickListener = onItemClickListener;
     }
@@ -60,9 +60,6 @@ public class PoisAdapter extends RecyclerView.Adapter<PoisAdapter.PoisViewHolder
                     }
                 }
             });
-
-            // Agrega listeners para los botones de modificar y eliminar según sea necesario
-            // (puedes agregarlos según tus necesidades)
         }
 
         public void bind(Pois poi) {

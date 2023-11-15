@@ -22,7 +22,7 @@
         android:theme="@style/Theme.Practica"
         tools:targetApi="31">
         <activity
-            android:name=".activity_modify_location"
+            android:name=".mapagoogle.Activitymodifylocation"
             android:exported="false" />
         <activity
             android:name=".MapBox"

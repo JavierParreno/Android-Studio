@@ -4,16 +4,20 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class Pois implements Parcelable {
+    private long id;
     private String titulo;
     private double latitud;
     private double longitud;
 
-    public Pois(String titulo, double latitud, double longitud) {
+    public Pois(long id, String titulo, double latitud, double longitud) {
+        this.id = id;
         this.titulo = titulo;
         this.latitud = latitud;
         this.longitud = longitud;
     }
-
+    public long getId() {
+        return id;
+    }
     public String getTitulo() {
         return titulo;
     }
@@ -39,6 +43,7 @@ public class Pois implements Parcelable {
     }
 
     protected Pois(Parcel in) {
+        id = in.readLong();
         titulo = in.readString();
         latitud = in.readDouble();
         longitud = in.readDouble();
@@ -63,6 +68,7 @@ public class Pois implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(id);
         dest.writeString(titulo);
         dest.writeDouble(latitud);
         dest.writeDouble(longitud);

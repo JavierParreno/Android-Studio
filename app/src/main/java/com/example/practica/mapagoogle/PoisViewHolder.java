@@ -27,23 +27,24 @@ public class PoisViewHolder extends RecyclerView.ViewHolder {
 
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                if (onItemClickListener != null) {
+            public void onClick(View view) {
+                if (listener != null) {
                     int position = getAdapterPosition();
                     if (position != RecyclerView.NO_POSITION) {
-                        onItemClickListener.onItemClick(position);
+                        listener.onItemClick(position);
                     }
                 }
             }
         });
 
         modifyButton.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
-                if (onItemClickListener != null) {
+                if (listener != null) {
                     int position = getAdapterPosition();
                     if (position != RecyclerView.NO_POSITION) {
-                        onItemClickListener.onModifyClick(position);
+                        listener.onModifyClick(position);
                     }
                 }
             }
@@ -52,10 +53,10 @@ public class PoisViewHolder extends RecyclerView.ViewHolder {
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (onItemClickListener != null) {
+                if (listener != null) {
                     int position = getAdapterPosition();
                     if (position != RecyclerView.NO_POSITION) {
-                        onItemClickListener.onDeleteClick(position);
+                        listener.onDeleteClick(position);
                     }
                 }
             }

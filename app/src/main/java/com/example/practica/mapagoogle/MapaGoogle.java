@@ -23,6 +23,7 @@ public class MapaGoogle extends FragmentActivity implements OnMapReadyCallback, 
     private GoogleMap mMap;
     private RecyclerView recyclerView;
     private PoisAdapter poisAdapter;
+    private static final int TUCODIGODESOLICITUD = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +40,8 @@ public class MapaGoogle extends FragmentActivity implements OnMapReadyCallback, 
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         // Asegúrate de tener un adaptador apropiado
-        poisAdapter = new PoisAdapter(poisList);
+        poisAdapter = new PoisAdapter(poisList, this);
+
         recyclerView.setAdapter(poisAdapter);
 
         // Configura el adaptador con la actividad como el escuchador de clics
@@ -86,24 +88,22 @@ public class MapaGoogle extends FragmentActivity implements OnMapReadyCallback, 
 
     @Override
     public void onModifyClick(int position) {
-        // Lógica para modificar las coordenadas de la ubicación
-        // Puedes abrir una nueva actividad o fragmento para permitir al usuario modificar las coordenadas
-        // Utiliza poisAdapter.getItem(position) para obtener la ubicación seleccionada
+        Log.d("PoisAdapter", "onModifyClick called at position: " + position);
         Pois selectedPoi = poisAdapter.getItem(position);
-
-        // Aquí puedes abrir una nueva actividad o fragmento para permitir al usuario modificar las coordenadas
-        // Puedes pasar la información del POI a la nueva actividad o fragmento a través de un Intent
-        // Ejemplo:
-        Intent modifyIntent = new Intent(MapaGoogle.this, Activitymodifylocation.class);
-        modifyIntent.putExtra("selectedPoi", selectedPoi);
-        startActivity(modifyIntent);
+        if (selectedPoi != null) {
+            Intent modifyIntent = new Intent(MapaGoogle.this, Activitymodifylocation.class);
+            modifyIntent.putExtra("selectedPoi", selectedPoi);
+            startActivityForResult(modifyIntent, TUCODIGODESOLICITUD);
+        } else {
+            Log.e("MapaGoogle", "selectedPoi es nulo en onModifyClick");
+        }
     }
 
     @Override
     public void onDeleteClick(int position) {
+
         // Lógica para borrar la ubicación
         poisAdapter.removeItem(position);
-
         // También puedes eliminar el marcador del mapa si lo deseas
         // Ejemplo:
         mMap.clear();
@@ -111,5 +111,45 @@ public class MapaGoogle extends FragmentActivity implements OnMapReadyCallback, 
             LatLng poiLatLng = new LatLng(poi.getLatitud(), poi.getLongitud());
             mMap.addMarker(new MarkerOptions().position(poiLatLng).title(poi.getTitulo()));
         }
+    }
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == TUCODIGODESOLICITUD && resultCode == RESULT_OK) {
+            // Manejar los resultados devueltos por Activitymodifylocation
+            Pois modifiedPoi = (Pois) data.getSerializableExtra("modifiedPoi");
+            int position = findPositionInList(modifiedPoi); // Encuentra la posición del POI modificado en la lista
+
+            if (position != -1) {
+                // Actualiza el marcador en el mapa
+                updateMapMarker(position, modifiedPoi);
+
+                // Actualiza la ubicación en la lista de POIs y notifica al adaptador
+                updatePoiInList(position, modifiedPoi);
+            } else {
+                Log.e("onActivityResult", "No se pudo encontrar la posición del POI modificado en la lista");
+            }
+        }
+    }
+    private int findPositionInList(Pois modifiedPoi) {
+        for (int i = 0; i < poisAdapter.poisList.size(); i++) {
+            Pois poi = poisAdapter.poisList.get(i);
+            if (poi.getId() == modifiedPoi.getId()) {
+                return i;
+            }
+        }
+        return -1;
+        // Devuelve -1 si no se encuentra el POI en la lista
+    }
+
+    // Método para actualizar el marcador en el mapa
+    private void updateMapMarker(int position, Pois modifiedPoi) {
+        LatLng poiLatLng = new LatLng(modifiedPoi.getLatitud(), modifiedPoi.getLongitud());
+        mMap.addMarker(new MarkerOptions().position(poiLatLng).title(modifiedPoi.getTitulo()));
+    }
+
+    // Método para actualizar la ubicación en la lista de POIs y notificar al adaptador
+    private void updatePoiInList(int position, Pois modifiedPoi) {
+        poisAdapter.poisList.set(position, modifiedPoi);
+        poisAdapter.notifyItemChanged(position);
     }
 }

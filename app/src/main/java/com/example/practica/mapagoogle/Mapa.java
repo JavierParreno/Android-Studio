@@ -22,6 +22,7 @@ public class Mapa extends AppCompatActivity {
     private Button btnAgregar;
     private Button btnGuardar;
     private Button btnMapa;
+    private int nextId = 1;
     private ArrayList<Pois> poisList = new ArrayList<>();
 
     @Override
@@ -69,8 +70,11 @@ public class Mapa extends AppCompatActivity {
                 double latitude = Double.parseDouble(etLatitud.getText().toString());
                 double longitude = Double.parseDouble(etLongitud.getText().toString());
 
+                // Obtener un nuevo id (asegúrate de tener una lógica para generar un id único)
+
                 // Agregar un POI a la lista
-                poisList.add(new Pois(etTitulo.getText().toString(), latitude, longitude));
+                poisList.add(new Pois(nextId, etTitulo.getText().toString(), latitude, longitude));
+                nextId++;
 
                 // Limpiar los campos después de agregar un POI
                 etTitulo.setText("");
@@ -79,12 +83,14 @@ public class Mapa extends AppCompatActivity {
             }
         });
 
+
+
         // Configurar el botón "Guardar" (puedes agregar lógica de guardado si es necesario)
         btnGuardar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Agrega el POI actual a la lista.
-                poisList.add(new Pois(etTitulo.getText().toString(), Double.parseDouble(etLatitud.getText().toString()), Double.parseDouble(etLongitud.getText().toString())));
+                poisList.add(new Pois(getNextId(),etTitulo.getText().toString(), Double.parseDouble(etLatitud.getText().toString()), Double.parseDouble(etLongitud.getText().toString())));
             }
         });
 
@@ -102,5 +108,14 @@ public class Mapa extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+    private long getNextId() {
+        long maxId = 0;
+        for (Pois poi : poisList) {
+            if (poi.getId() > maxId) {
+                maxId = poi.getId();
+            }
+        }
+        return maxId + 1;
     }
 }
