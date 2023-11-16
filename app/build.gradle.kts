@@ -4,6 +4,8 @@ plugins {
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
 }
 
+
+
 android {
     namespace = "com.example.practica"
     compileSdk = 34
@@ -58,4 +60,6 @@ dependencies {
     implementation ("com.github.bumptech.glide:glide:4.12.0")
     annotationProcessor ("com.github.bumptech.glide:compiler:4.12.0")
     implementation ("com.google.android.gms:play-services-location:21.0.1")
+    implementation ("com.mapbox.mapboxsdk:mapbox-android-sdk:6.0.1")
+    implementation ("com.mapbox.mapboxsdk:mapbox-android-plugin-locationlayer:0.5.0")
 }
