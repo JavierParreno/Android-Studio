@@ -1,21 +1,27 @@
 package com.example.practica.mapagoogle;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.practica.R;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-
 
 import java.util.ArrayList;
 
@@ -25,27 +31,58 @@ public class MapaGoogle extends FragmentActivity implements OnMapReadyCallback, 
     private PoisAdapter poisAdapter;
     private static final int TUCODIGODESOLICITUD = 1;
 
+    private FusedLocationProviderClient fusedLocationClient;
+    private static final int PERMISSION_REQUEST_LOCATION = 1000;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mapa_google);
 
-        // Obtén la lista de POIs desde el Intent
-        ArrayList<Pois> poisList = (ArrayList<Pois>) getIntent().getSerializableExtra("ubicaciones");
-
-        // Obtener una referencia al fragmento de mapa y registrar un callback para obtener el objeto GoogleMap
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        // Asegúrate de tener un adaptador apropiado
+
+        ArrayList<Pois> poisList = (ArrayList<Pois>) getIntent().getSerializableExtra("ubicaciones");
         poisAdapter = new PoisAdapter(poisList, this);
-
         recyclerView.setAdapter(poisAdapter);
-
-        // Configura el adaptador con la actividad como el escuchador de clics
         poisAdapter.setOnItemClickListener(this);
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        checkLocationPermission();
+    }
+
+    private void checkLocationPermission() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_REQUEST_LOCATION);
+        } else {
+            getDeviceLocation();
+        }
+    }
+
+    private void getDeviceLocation() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            fusedLocationClient.getLastLocation()
+                    .addOnSuccessListener(this, location -> {
+                        if (location != null) {
+                            double latitude = location.getLatitude();
+                            double longitude = location.getLongitude();
+                            LatLng currentLatLng = new LatLng(latitude, longitude);
+                            mMap.addMarker(new MarkerOptions().position(currentLatLng).title("Ubicación Actual"));
+                            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 15));
+                        } else {
+                            Toast.makeText(this, "No se pudo obtener la ubicación actual", Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .addOnFailureListener(this, e -> {
+                        Log.e("Location", "Error al obtener la ubicación: " + e.getMessage());
+                    });
+        } else {
+            // Si los permisos no están otorgados, solicítalos explícitamente
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_REQUEST_LOCATION);
+        }
     }
 
     @Override
@@ -152,4 +189,6 @@ public class MapaGoogle extends FragmentActivity implements OnMapReadyCallback, 
         poisAdapter.poisList.set(position, modifiedPoi);
         poisAdapter.notifyItemChanged(position);
     }
+
+
 }

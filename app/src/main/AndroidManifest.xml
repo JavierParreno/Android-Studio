@@ -9,6 +9,7 @@
     <uses-permission android:name="android.permission.USE_CAMERA" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
@@ -21,52 +22,61 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Practica"
         tools:targetApi="31">
-        <activity
-            android:name=".mapagoogle.Activitymodifylocation"
-            android:exported="false" />
-        <activity
-            android:name=".MapBox"
-            android:exported="false" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyCREUgjE6dfNF91lU1CIvOK4SD9BJAbTGc" />
+            android:value="${MAPS_API_KEY}" />
+
+        <activity
+            android:name=".mapagoogle.Activitymodifylocation"
+            android:exported="false" />
+
+        <activity
+            android:name=".MapBox"
+            android:exported="false" />
 
         <activity
             android:name=".mapagoogle.MapaGoogle"
             android:exported="false"
             android:label="@string/title_activity_mapa_google" />
+
         <activity
             android:name=".mapagoogle.Mapa"
             android:exported="false" />
+
         <activity
             android:name=".ShowActivity"
             android:exported="false" />
+
         <activity
             android:name=".SubirImagenFirebase"
             android:exported="false" />
+
         <activity
             android:name=".UsuarioReg"
             android:exported="false" />
+
         <activity
             android:name=".Registro"
             android:exported="false" />
+
         <activity
             android:name=".Foto"
             android:exported="false" />
+
         <activity
             android:name=".listacompra.ListaCompra"
             android:exported="false" />
+
         <activity
             android:name=".MainActivity"
             android:exported="true"
             android:parentActivityName=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-    </application>
 
+    </application>
 </manifest>
