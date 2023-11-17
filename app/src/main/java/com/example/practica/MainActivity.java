@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.practica.mapagoogle.Mapa;
+import com.example.practica.mapbox.MapBox;
 import com.google.android.material.navigation.NavigationView;
 
 import com.example.practica.listacompra.ListaCompra;
@@ -63,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
         btnaLista.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(MainActivity.this, ListaCompra.class);
+                Intent i = new Intent(com.example.practica.MainActivity.this, ListaCompra.class);
                 startActivity(i);
             }
         });
@@ -71,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
         btnaFoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(MainActivity.this, Foto.class);
+                Intent i = new Intent(com.example.practica.MainActivity.this, Foto.class);
                 startActivity(i);
             }
         });
@@ -79,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
         btnRegistro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(MainActivity.this, Registro.class);
+                Intent i = new Intent(com.example.practica.MainActivity.this, Registro.class);
                 startActivity(i);
             }
         });
@@ -87,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
         btnSubirFotoFire.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(MainActivity.this, SubirImagenFirebase.class);
+                Intent i = new Intent(com.example.practica.MainActivity.this, SubirImagenFirebase.class);
                 startActivity(i);
             }
         });
@@ -95,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
         btnMapa.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(MainActivity.this, Mapa.class);
+                Intent i = new Intent(com.example.practica.MainActivity.this, Mapa.class);
                 startActivity(i);
             }
         });
@@ -103,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
         btnMapBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(MainActivity.this, MapBox.class);
+                Intent i = new Intent(com.example.practica.MainActivity.this, MapBox.class);
                 startActivity(i);
             }
         });
@@ -129,12 +130,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void openListaCompra() {
-        Intent i = new Intent(MainActivity.this, ListaCompra.class);
+        Intent i = new Intent(com.example.practica.MainActivity.this, ListaCompra.class);
         startActivity(i);
     }
 
     private void openFoto() {
-        Intent i = new Intent(MainActivity.this, Foto.class);
+        Intent i = new Intent(com.example.practica.MainActivity.this, Foto.class);
         startActivity(i);
     }
 

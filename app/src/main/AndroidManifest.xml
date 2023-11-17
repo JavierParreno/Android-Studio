@@ -21,16 +21,17 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Practica"
         tools:targetApi="31">
-        <activity
-            android:name=".mapagoogle.Activitymodifylocation"
-            android:exported="false" />
-        <activity
-            android:name=".MapBox"
-            android:exported="false" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyCREUgjE6dfNF91lU1CIvOK4SD9BJAbTGc" />
+
+        <activity
+            android:name=".mapagoogle.Activitymodifylocation"
+            android:exported="false" />
+        <activity
+            android:name=".mapbox.MapBox"
+            android:exported="false" />
 
         <activity
             android:name=".mapagoogle.MapaGoogle"

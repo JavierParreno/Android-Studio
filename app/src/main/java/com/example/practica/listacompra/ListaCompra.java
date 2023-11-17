@@ -23,6 +23,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.practica.Foto;
 import com.example.practica.MainActivity;
 import com.example.practica.R;
@@ -55,7 +56,7 @@ public class ListaCompra extends AppCompatActivity implements TaskAdapter.OnItem
 
         SharedPreferences sharedPreferences = getSharedPreferences("MisSharedPreferences", Context.MODE_PRIVATE);
         String imageUriString = sharedPreferences.getString("selected_image_uri", null);
-        imgTarea = findViewById(R.id.imgTarea); // Debes asegurarte de inicializar correctamente imgTarea
+        imgTarea = findViewById(R.id.imgTarea);
 
         if (imageUriString != null) {
             selectedImageUri = Uri.parse(imageUriString);

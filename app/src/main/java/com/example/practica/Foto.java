@@ -15,6 +15,7 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.example.practica.listacompra.ListaCompra;
+import com.example.practica.MainActivity;
 import com.google.android.material.navigation.NavigationView;
 
 
@@ -30,9 +31,7 @@ public class Foto extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_foto);
 
-        Toolbar toolbar = findViewById(R.id.toolbar); // Asegúrate de que tengas un elemento Toolbar en tu layout
-
-        // Configurar el botón de hamburguesa (ícono de menú)
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         drawerLayout = findViewById(R.id.drawer_layout); // Asegúrate de que tengas un elemento DrawerLayout en tu layout
