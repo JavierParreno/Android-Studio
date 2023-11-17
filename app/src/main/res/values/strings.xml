@@ -12,5 +12,4 @@
     <string name="login_failed">"Login failed"</string>
     <string name="title_activity_mapa_google">MapaGoogle</string>
     <string name="access_token">pk.eyJ1IjoiamF2aWVycGFycmVubyIsImEiOiJjbG96aXU4M3YwMWVnMmlubGZneGZ4OWdmIn0.LkCG3sC-U14rPM0QKMIIbg</string>
-
 </resources>

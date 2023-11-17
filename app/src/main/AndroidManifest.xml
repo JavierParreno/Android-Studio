@@ -36,6 +36,13 @@
             android:exported="false" />
 
         <activity
+            android:name=".mapagoogle.Activitymodifylocation"
+            android:exported="false" />
+        <activity
+            android:name=".mapbox.MapBox"
+            android:exported="false" />
+
+        <activity
             android:name=".mapagoogle.MapaGoogle"
             android:exported="false"
             android:label="@string/title_activity_mapa_google" />

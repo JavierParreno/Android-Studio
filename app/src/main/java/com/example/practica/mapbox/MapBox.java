@@ -1,5 +1,6 @@
 package com.example.practica.mapbox;
 
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -7,17 +8,21 @@ import android.annotation.SuppressLint;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.practica.R;
+import com.mapbox.*;
 import com.mapbox.android.core.location.LocationEngine;
 import com.mapbox.android.core.location.LocationEngineListener;
 import com.mapbox.android.core.location.LocationEnginePriority;
 import com.mapbox.android.core.location.LocationEngineProvider;
 import com.mapbox.android.core.permissions.PermissionsListener;
 import com.mapbox.android.core.permissions.PermissionsManager;
+import com.mapbox.api.directions.v5.models.DirectionsResponse;
+import com.mapbox.api.directions.v5.models.DirectionsRoute;
 import com.mapbox.geojson.Point;
 import com.mapbox.mapboxsdk.Mapbox;
 import com.mapbox.mapboxsdk.annotations.Marker;
@@ -30,10 +35,18 @@ import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.mapbox.mapboxsdk.plugins.locationlayer.LocationLayerPlugin;
 import com.mapbox.mapboxsdk.plugins.locationlayer.modes.CameraMode;
 import com.mapbox.mapboxsdk.plugins.locationlayer.modes.RenderMode;
+import com.mapbox.services.android.navigation.ui.v5.NavigationLauncher;
+import com.mapbox.services.android.navigation.ui.v5.NavigationLauncherOptions;
+import com.mapbox.services.android.navigation.ui.v5.route.NavigationMapRoute;
+import com.mapbox.services.android.navigation.v5.navigation.NavigationRoute;
+
 
 import java.util.List;
 
-public class MapBox extends AppCompatActivity implements OnMapReadyCallback, LocationEngineListener,
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+public class MapBox  extends AppCompatActivity implements OnMapReadyCallback, LocationEngineListener,
         PermissionsListener,MapboxMap.OnMapClickListener{
 
     private MapView mvBox;
@@ -48,8 +61,8 @@ public class MapBox extends AppCompatActivity implements OnMapReadyCallback, Loc
     private Point originPosition;
     private Point destinationPosition;
     private Marker destinationMarker;
-
-
+    private NavigationMapRoute navigationMapRoute;
+    private static final String TAG = "Tag Mapbox";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +78,12 @@ public class MapBox extends AppCompatActivity implements OnMapReadyCallback, Loc
         btnStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO HACER PLAN DE NAVEGACIÓN
+                NavigationLauncherOptions options = NavigationLauncherOptions.builder()
+                        .origin(originPosition)
+                        .destination(destinationPosition)
+                        .shouldSimulateRoute(true)
+                        .build();
+                NavigationLauncher.startNavigation(MapBox.this, options);
             }
         });
 
@@ -73,8 +91,16 @@ public class MapBox extends AppCompatActivity implements OnMapReadyCallback, Loc
     @Override
     public void onMapReady(MapboxMap mapboxMap) {
         map = mapboxMap;
+        LatLng mad = new LatLng(40.477424, -3.703659);
+        map.addMarker(new MarkerOptions().position(mad).title("Aquí"));
         map.addOnMapClickListener(this);
         enableLocation();
+
+        /*MapboxGeocoding reverseGeocode = MapboxGeocoding.builder()
+                .accessToken(getString(R.string.access_token))
+                .query(Point.fromLngLat(40.477424, -3.703659))
+                .geocodingTypes(GeocodingCriteria.TYPE_ADDRESS)
+                .build();*/
 
     }
 
@@ -221,11 +247,48 @@ public class MapBox extends AppCompatActivity implements OnMapReadyCallback, Loc
 
         destinationPosition = Point.fromLngLat(point.getLongitude(), point.getLatitude());
         originPosition = Point.fromLngLat(originLocation.getLongitude(), originLocation.getLatitude());
-
+        getRoute(originPosition, destinationPosition);
         btnStart.setEnabled(true);
         Toast.makeText(this, "Longitud: "+point.getLongitude()+" Latitud: "+point.getLatitude(), Toast.LENGTH_SHORT).show();
         //btnStart.setBackgroundColor(5);
 
+
+    }
+
+    private void getRoute(Point origin, Point destination){
+
+        NavigationRoute.builder()
+                .accessToken(Mapbox.getAccessToken())
+                .origin(origin)
+                .destination(destination)
+                .build()
+                .getRoute(new Callback<DirectionsResponse>() {
+                    @Override
+                    public void onResponse(Call<DirectionsResponse> call, Response<DirectionsResponse> response) {
+                        if(response.body() == null){
+                            Log.e(TAG, "Sin acceso a la API");
+
+                        }else if(response.body().routes().size() == 0){
+                            Log.e(TAG, "No encontró ninguna ruta.");
+                        }
+
+                        DirectionsRoute currentRoute = response.body().routes().get(0);
+                        if(navigationMapRoute != null){
+                            navigationMapRoute.removeRoute();
+                        }else{
+                            navigationMapRoute = new NavigationMapRoute(null, mvBox, map);
+                        }
+
+                        navigationMapRoute.addRoute(currentRoute);
+
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<DirectionsResponse> call, Throwable t) {
+                        Log.e(TAG, "Error"+t.getMessage());
+                    }
+                });
 
     }
 }
