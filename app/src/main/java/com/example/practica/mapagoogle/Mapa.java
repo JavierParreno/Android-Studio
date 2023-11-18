@@ -16,12 +16,8 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 public class Mapa extends AppCompatActivity {
-    private EditText etTitulo;
-    private EditText etLongitud;
-    private EditText etLatitud;
-    private Button btnAgregar;
-    private Button btnGuardar;
-    private Button btnMapa;
+    private EditText etTitulo, etLongitud, etLatitud;
+    private Button btnAgregar, btnGuardar, btnMapa;
     private int nextId = 1;
     private ArrayList<Pois> poisList = new ArrayList<>();
 
@@ -54,7 +50,6 @@ public class Mapa extends AppCompatActivity {
             poisList = new ArrayList<>();
         }
 
-        // Obtener referencias a las vistas en tu diseño XML
         etTitulo = findViewById(R.id.etTitulo);
         etLongitud = findViewById(R.id.etLongitud);
         etLatitud = findViewById(R.id.etLatitud);
@@ -62,7 +57,6 @@ public class Mapa extends AppCompatActivity {
         btnGuardar = findViewById(R.id.btnGuardar);
         btnMapa = findViewById(R.id.btnMapa);
 
-        // Configurar el botón "Agregar"
         btnAgregar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -82,8 +76,6 @@ public class Mapa extends AppCompatActivity {
                 etLongitud.setText("");
             }
         });
-
-
 
         // Configurar el botón "Guardar" (puedes agregar lógica de guardado si es necesario)
         btnGuardar.setOnClickListener(new View.OnClickListener() {
@@ -109,6 +101,8 @@ public class Mapa extends AppCompatActivity {
             }
         });
     }
+
+
     private long getNextId() {
         long maxId = 0;
         for (Pois poi : poisList) {

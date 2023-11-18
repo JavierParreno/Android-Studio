@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:mapbox="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <com.mapbox.mapboxsdk.maps.MapView
+        android:id="@+id/mvBoxAparcar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        mapbox:mapbox_cameraTargetLat="40.4165000"
+        mapbox:mapbox_cameraTargetLng="-3.7025600"
+        mapbox:mapbox_styleUrl="mapbox://styles/mapbox/dark-v9"
+        mapbox:mapbox_cameraZoom="12" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:scrollbarSize="20dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- RecyclerView -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvParking"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:background="@android:color/background_light"
+                android:padding="16dp"
+                android:scrollbarSize="10dp" />
+        </LinearLayout>
+    </ScrollView>
+    <Button
+        android:id="@+id/btnGuardaParking"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="80dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Guardar Ubicacion" />
+</RelativeLayout>
