@@ -4,20 +4,19 @@ public class ParkingPOIS {
     private String nombre;
     private double latitud;
     private double longitud;
-    // Otros atributos relevantes
+
+    private String id;
 
     public ParkingPOIS() {
         // Constructor vacío requerido por Firebase
     }
 
-    public ParkingPOIS(String nombre, double latitud, double longitud) {
+    public ParkingPOIS(String nombre, double latitud, double longitud, String id) {
         this.nombre = nombre;
         this.latitud = latitud;
         this.longitud = longitud;
-        // Inicializar otros atributos si es necesario
+        this.id = id;
     }
-
-    // Getters y setters para los atributos
 
     public String getNombre() {
         return nombre;
@@ -42,5 +41,11 @@ public class ParkingPOIS {
     public void setLongitud(double longitud) {
         this.longitud = longitud;
     }
-    // Otros getters y setters si es necesario
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 }

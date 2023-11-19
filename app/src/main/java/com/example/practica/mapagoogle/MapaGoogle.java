@@ -30,7 +30,6 @@ public class MapaGoogle extends FragmentActivity implements OnMapReadyCallback, 
     private RecyclerView recyclerView;
     private PoisAdapter poisAdapter;
     private static final int TUCODIGODESOLICITUD = 1;
-
     private FusedLocationProviderClient fusedLocationClient;
     private static final int PERMISSION_REQUEST_LOCATION = 1000;
 
@@ -149,6 +148,7 @@ public class MapaGoogle extends FragmentActivity implements OnMapReadyCallback, 
             mMap.addMarker(new MarkerOptions().position(poiLatLng).title(poi.getTitulo()));
         }
     }
+
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == TUCODIGODESOLICITUD && resultCode == RESULT_OK) {
@@ -167,6 +167,7 @@ public class MapaGoogle extends FragmentActivity implements OnMapReadyCallback, 
             }
         }
     }
+
     private int findPositionInList(Pois modifiedPoi) {
         for (int i = 0; i < poisAdapter.poisList.size(); i++) {
             Pois poi = poisAdapter.poisList.get(i);
@@ -189,6 +190,4 @@ public class MapaGoogle extends FragmentActivity implements OnMapReadyCallback, 
         poisAdapter.poisList.set(position, modifiedPoi);
         poisAdapter.notifyItemChanged(position);
     }
-
-
 }

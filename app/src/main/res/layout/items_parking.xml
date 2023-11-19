@@ -5,8 +5,8 @@
     android:orientation="vertical"
     android:padding="16dp">
 
-    <TextView
-        android:id="@+id/tvParking"
+    <EditText
+        android:id="@+id/etParking"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="18sp"
@@ -25,7 +25,7 @@
         android:textSize="16sp" />
 
     <Button
-        android:id="@+id/btnBorrarParking"
+        android:id="@+id/btneliminarPOI"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Eliminar" />

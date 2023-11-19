@@ -69,8 +69,10 @@ dependencies {
     implementation ("com.github.bumptech.glide:glide:4.12.0")
     annotationProcessor ("com.github.bumptech.glide:compiler:4.12.0")
 
-    implementation ("com.mapbox.mapboxsdk:mapbox-android-sdk:6.0.1")
-    implementation ("com.mapbox.mapboxsdk:mapbox-android-plugin-locationlayer:0.5.0")
+    implementation ("com.mapbox.maps:mapbox-android-sdk:9.2.0")
+    implementation ("com.mapbox.mapboxsdk:mapbox-android-accounts:0.7.0")
+    implementation ("com.mapbox.mapboxsdk:mapbox-android-plugin-annotation-v9:0.9.0")
+    implementation ("com.mapbox.mapboxsdk:mapbox-android-plugin-locationlayer:0.5.1")
     implementation ("com.mapbox.mapboxsdk:mapbox-android-navigation:0.13.0")
     implementation ("com.mapbox.mapboxsdk:mapbox-android-navigation-ui:0.13.0"){
         isTransitive=true
