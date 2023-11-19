@@ -28,6 +28,7 @@ import com.mapbox.mapboxsdk.Mapbox;
 import com.mapbox.mapboxsdk.annotations.Marker;
 import com.mapbox.mapboxsdk.annotations.MarkerOptions;
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory;
+import com.mapbox.mapboxsdk.constants.Style;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
@@ -54,15 +55,14 @@ public class MapBox  extends AppCompatActivity implements OnMapReadyCallback, Lo
     private PermissionsManager permissionsManager;
     private LocationEngine locationEngine;
     private LocationLayerPlugin locationLayerPlugin;
-
     private Button btnStart;
-
     private Location originLocation;
     private Point originPosition;
     private Point destinationPosition;
     private Marker destinationMarker;
     private NavigationMapRoute navigationMapRoute;
     private static final String TAG = "Tag Mapbox";
+    Location originLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,16 +91,17 @@ public class MapBox  extends AppCompatActivity implements OnMapReadyCallback, Lo
     @Override
     public void onMapReady(MapboxMap mapboxMap) {
         map = mapboxMap;
+        /*
         LatLng mad = new LatLng(40.477424, -3.703659);
         map.addMarker(new MarkerOptions().position(mad).title("Aquí"));
         map.addOnMapClickListener(this);
         enableLocation();
-
-        /*MapboxGeocoding reverseGeocode = MapboxGeocoding.builder()
-                .accessToken(getString(R.string.access_token))
-                .query(Point.fromLngLat(40.477424, -3.703659))
-                .geocodingTypes(GeocodingCriteria.TYPE_ADDRESS)
-                .build();*/
+         */
+        enableLocation();
+        mapboxMap.getUiSettings().setZoomControlsEnabled(true);
+        mapboxMap.getUiSettings().setZoomGesturesEnabled(true);
+        mapboxMap.getUiSettings().setScrollGesturesEnabled(true);
+        mapboxMap.getUiSettings().setAllGesturesEnabled(true);
 
     }
 
