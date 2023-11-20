@@ -13,8 +13,7 @@
         mapbox:mapbox_cameraTargetLat= "40.4165000"
         mapbox:mapbox_cameraTargetLng = "-3.7025600"
         mapbox:mapbox_styleUrl="mapbox://styles/mapbox/dark-v9"
-        mapbox:mapbox_cameraZoom = "12"
-        />
+        mapbox:mapbox_cameraZoom = "12" />
 
     <Button
         android:id="@+id/btnStart"

@@ -17,30 +17,31 @@ import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.practica.R;
+
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
-import com.mapbox.geojson.Point;
-import com.mapbox.mapboxsdk.Mapbox;
-import com.mapbox.mapboxsdk.maps.MapView;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import com.mapbox.android.core.permissions.PermissionsManager;
+import com.mapbox.mapboxsdk.Mapbox;
+import com.mapbox.mapboxsdk.constants.Style;
+
+import com.mapbox.mapboxsdk.location.LocationComponent;
+import com.mapbox.mapboxsdk.location.LocationComponentOptions;
+import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
-import com.mapbox.mapboxsdk.maps.Style;
-import com.mapbox.mapboxsdk.plugins.annotation.SymbolManager;
-import com.mapbox.mapboxsdk.plugins.annotation.SymbolOptions;
+import com.mapbox.geojson.Point;
 
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Parking extends AppCompatActivity {
-
     private MapView mapView;
     private MapboxMap mapboxMap;
-    private Style mapStyle;
     private RecyclerView recyclerView;
     private Button btnGuardarParking;
     private DatabaseReference databaseReference;
@@ -63,34 +64,19 @@ public class Parking extends AppCompatActivity {
         Mapbox.getInstance(this, getString(R.string.access_token));
         mapView = findViewById(R.id.mvBoxAparcar);
         mapView.onCreate(savedInstanceState);
-        mapView.getMapAsync(new OnMapReadyCallback() {
-            @Override
-            public void onMapReady(@NonNull final MapboxMap mapboxMap) {
-                Parking.this.mapboxMap = mapboxMap;
 
-                mapboxMap.setStyle(Style.MAPBOX_STREETS, new Style.OnStyleLoaded() {
-                    @Override
-                    public void onStyleLoaded(@NonNull Style style) {
-                        mapStyle = style;
 
-                        // Agregar una imagen al estilo del mapa
-                        mapStyle.addImage("location-icon-id", getResources().getDrawable(R.drawable.ic_location));
-
-                        // Crear un marcador en la ubicación actual y añadirlo al mapa
-                        SymbolManager symbolManager = new SymbolManager(mapView, mapboxMap, mapStyle);
-                        symbolManager.setIconAllowOverlap(true);
-                        symbolManager.setTextAllowOverlap(true);
-                        symbolManager.create(new SymbolOptions()
-                                .withIconImage("location-icon-id")
-                                .withIconSize(1.3f)
-                                .withGeometry(Point.fromLngLat(currentLongitude, currentLatitude)) // Reemplaza currentLongitude y currentLatitude con las coordenadas de tu ubicación actual
-                                .withTextField("Ubicación Actual")
-                                .withTextOffset(new Float[] {0f, 1.5f}));
-                    }
-                });
-
+        mapView.getMapAsync(mapboxMap -> {
+            // Configurar el estilo del mapa si es necesario
+            if (mapboxMap != null) {
+                mapboxMap.setStyle(Style.MAPBOX_STREETS);
+                // Aquí puedes realizar otras operaciones después de establecer el estilo
             }
         });
+
+
+
+
 
         // Enlazar vistas
         recyclerView = findViewById(R.id.rvParking);
@@ -110,12 +96,16 @@ public class Parking extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
         // Agregar un listener al botón "Guardar Ubicacion" para guardar la ubicación
-        btnGuardarParking.setOnClickListener(v -> guardarUbicacion());
-
-
+        btnGuardarParking.setOnClickListener(v -> {
+            if (currentLatitude != 0 && currentLongitude != 0) {
+                guardarUbicacion(currentLatitude, currentLongitude);
+            } else {
+                // Avisa al usuario de que la ubicación aún no está disponible
+                Toast.makeText(getApplicationContext(), "Ubicación no disponible todavía", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         // Escuchar cambios en la base de datos y actualizar la lista
-
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -145,12 +135,10 @@ public class Parking extends AppCompatActivity {
         locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(@NonNull Location location) {
-                // Utiliza la ubicación actual aquí (location.getLatitude(), location.getLongitude())
-                // Puedes usar la ubicación actual en tu lógica para guardar la posición del estacionamiento, etc.
+                // Obtener la ubicación actualizada
+                currentLatitude = location.getLatitude();
+                currentLongitude = location.getLongitude();
             }
-
-            // Otros métodos de LocationListener
-            //...
 
         };
 
@@ -168,16 +156,20 @@ public class Parking extends AppCompatActivity {
     }
 
     // Método para guardar la ubicación (debes implementar tu lógica para guardar en Firebase)
-    private void guardarUbicacion() {
+
+    private void guardarUbicacion(double latitude, double longitude) {
         // Generar un ID único para el elemento
         String id = databaseReference.push().getKey();
 
         // Crear un objeto ParkingPOIS con los datos que deseas guardar, incluyendo el ID
-        ParkingPOIS parkingPOI = new ParkingPOIS("Nombre", 123.456, 789.012, id); // Aquí usa tus propios datos
+        ParkingPOIS parkingPOI = new ParkingPOIS("Nombre", latitude, longitude, id); // Aquí usa tus propios datos
 
         // Agregar los datos a Firebase Realtime Database
         databaseReference.child(id).setValue(parkingPOI); // Guarda el objeto en la base de datos bajo el ID generado
     }
+
+
+
 
     // Métodos del ciclo de vida del MapView (necesario para Mapbox)
     @Override
@@ -225,9 +217,11 @@ public class Parking extends AppCompatActivity {
     // Método para manejar la respuesta de permisos
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults); // Call super method
+
         if (requestCode == PERMISSION_REQUEST_CODE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // Si se otorgan los permisos, solicitar actualizaciones de ubicación
+                // If permissions are granted, request location updates
                 if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
                         ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                     locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
@@ -235,6 +229,4 @@ public class Parking extends AppCompatActivity {
             }
         }
     }
-
-
 }

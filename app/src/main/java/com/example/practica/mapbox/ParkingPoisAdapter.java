@@ -46,6 +46,28 @@ public class ParkingPoisAdapter extends RecyclerView.Adapter<ParkingPoisAdapter.
                 }
             }
         });
+
+        holder.btneGuardarPOI.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int clickedPosition = holder.getAdapterPosition();
+                if (clickedPosition != RecyclerView.NO_POSITION) {
+                    String nombre = holder.etParking.getText().toString();
+                    double latitude = parkingPOI.getLatitud();
+                    double longitude = parkingPOI.getLongitud();
+                    guardarUbicacion(latitude, longitude, nombre);
+                }
+            }
+        });
+
+
+    }
+
+    private void guardarUbicacion(double latitude, double longitude, String nombre) {
+        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("parking_locations");
+        String id = databaseRef.push().getKey();
+        ParkingPOIS parkingPOI = new ParkingPOIS(nombre, latitude, longitude, id);
+        databaseRef.child(id).setValue(parkingPOI);
     }
 
     private void eliminarPOI(int position) {
@@ -94,6 +116,7 @@ public class ParkingPoisAdapter extends RecyclerView.Adapter<ParkingPoisAdapter.
         private TextView latitudTextView;
         private TextView longitudTextView;
         private Button eliminarPOI;
+        private Button btneGuardarPOI;
 
         public ParkingPoisViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -101,6 +124,7 @@ public class ParkingPoisAdapter extends RecyclerView.Adapter<ParkingPoisAdapter.
             latitudTextView = itemView.findViewById(R.id.tvParkingLong);
             longitudTextView = itemView.findViewById(R.id.tvParkingLat);
             eliminarPOI = itemView.findViewById(R.id.btneliminarPOI);
+            btneGuardarPOI = itemView.findViewById(R.id.btneGuardarPOI);
         }
 
         public void bindData(ParkingPOIS parkingPOI) {
