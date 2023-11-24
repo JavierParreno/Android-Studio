@@ -14,6 +14,8 @@ import android.widget.Button;
 import com.example.practica.mapagoogle.Mapa;
 import com.example.practica.mapbox.Parking;
 import com.example.practica.mapbox.MapBox;
+import com.example.practica.notificaciones.Notificaciones;
+import com.example.practica.webview.WebView;
 import com.google.android.material.navigation.NavigationView;
 
 import com.example.practica.listacompra.ListaCompra;
@@ -23,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle actionBarDrawerToggle;
     private NavigationView navigationView;
-    private Button btnaLista, btnaFoto, btnRegistro, btnSubirFotoFire, btnMapa, btnMapBox, btnParkin;
+    private Button btnaLista, btnaFoto, btnRegistro, btnSubirFotoFire, btnMapa, btnMapBox, btnParkin,btnWebView, btnNotificaciones;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +45,9 @@ public class MainActivity extends AppCompatActivity {
         btnSubirFotoFire = (Button) findViewById(R.id.btnSubirFotoFire);
         btnMapa = (Button) findViewById(R.id.btnMapa);
         btnMapBox = (Button) findViewById(R.id.btnMapBox);
-        btnParkin= (Button) findViewById(R.id.btnParking);
+        btnParkin = (Button) findViewById(R.id.btnParking);
+        btnWebView = (Button) findViewById(R.id.btnWebView);
+        btnNotificaciones =(Button) findViewById(R.id.btnNotificaciones);
 
         navigationView = findViewById(R.id.nav_view);
 
@@ -115,6 +119,22 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, Parking.class);
+                startActivity(intent);
+            }
+        });
+
+        btnWebView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, WebView.class);
+                startActivity(intent);
+            }
+        });
+
+        btnNotificaciones.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, Notificaciones.class);
                 startActivity(intent);
             }
         });

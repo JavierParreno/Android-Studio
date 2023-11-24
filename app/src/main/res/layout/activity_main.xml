@@ -127,6 +127,36 @@
                 android:text="*- Parking -*" />
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/llWebView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnWebView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="*- Web View -*" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/llNotificaciones"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnNotificaciones"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="*- NOTIFICACIONES -*" />
+        </LinearLayout>
+
     </LinearLayout>
 
     <com.google.android.material.navigation.NavigationView

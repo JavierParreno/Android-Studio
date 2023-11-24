@@ -6,22 +6,4 @@
     android:layout_height="match_parent"
     tools:context=".mapbox.MapBox">
 
-    <com.mapbox.mapboxsdk.maps.MapView
-        android:id="@+id/mvBox"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        mapbox:mapbox_cameraTargetLat= "40.4165000"
-        mapbox:mapbox_cameraTargetLng = "-3.7025600"
-        mapbox:mapbox_styleUrl="mapbox://styles/mapbox/dark-v9"
-        mapbox:mapbox_cameraZoom = "12" />
-
-    <Button
-        android:id="@+id/btnStart"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="80dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Comenzar Navegación"
-        />
 </RelativeLayout>
