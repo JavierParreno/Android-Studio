@@ -15,6 +15,7 @@ import com.example.practica.mapagoogle.Mapa;
 import com.example.practica.mapbox.Parking;
 import com.example.practica.mapbox.MapBox;
 import com.example.practica.notificaciones.Notificaciones;
+import com.example.practica.filtrotexto.FiltroTexto;
 import com.example.practica.webview.WebView;
 import com.google.android.material.navigation.NavigationView;
 
@@ -25,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle actionBarDrawerToggle;
     private NavigationView navigationView;
-    private Button btnaLista, btnaFoto, btnRegistro, btnSubirFotoFire, btnMapa, btnMapBox, btnParkin,btnWebView, btnNotificaciones;
+    private Button btnaLista, btnaFoto, btnRegistro, btnSubirFotoFire, btnMapa, btnMapBox, btnParkin,btnWebView, btnNotificaciones, btnTextoPredictivo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
         btnParkin = (Button) findViewById(R.id.btnParking);
         btnWebView = (Button) findViewById(R.id.btnWebView);
         btnNotificaciones =(Button) findViewById(R.id.btnNotificaciones);
+        btnTextoPredictivo =(Button) findViewById(R.id.btnPredictivo);
 
         navigationView = findViewById(R.id.nav_view);
 
@@ -138,6 +140,15 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        btnTextoPredictivo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, FiltroTexto.class);
+                startActivity(intent);
+            }
+        });
+
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
