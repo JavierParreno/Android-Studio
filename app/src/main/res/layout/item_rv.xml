@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardElevation="40dp"
+    app:cardElevation="5dp"
     app:cardUseCompatPadding="true">
 
     <LinearLayout
@@ -26,6 +26,5 @@
             android:id="@+id/tvEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
-
     </LinearLayout>
 </androidx.cardview.widget.CardView>
